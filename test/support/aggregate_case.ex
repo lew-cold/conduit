@@ -18,15 +18,13 @@ defmodule Conduit.AggregateCase do
 
             # Execute one or more commands against an aggregate
             defp execute(commands) do
-                {_, events} = Enum.reduce(commands, {%@aggregate_module{}, []}, fn (command, {aggregate, _})
-                
-                    events = @aggregate_module.execute(aggregate, command)
-                    
-                    {evolve(aggregate, events), events}
-                  end)
-                List.wrap(events)
+                {_, events} = Enum.reduce(commands, {%@aggregate_module{}, []}, fn (command, {aggregate, _}) ->
+                  events = @aggregate_module.execute(aggregate, command)
+                   {evolve(aggregate, events), events}
+                end)
+                 List.wrap(events)
             end
-
+            
             # Apply the given events to the aggregate state
             defp evolve(aggregate, events) do
                 events

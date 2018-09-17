@@ -18,3 +18,4 @@ defmodule Conduit.Accounts.Aggregates.UserTest do
             ]
         end
     end
+end
