@@ -13,6 +13,15 @@ config :conduit, ConduitWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+# Configs the EventStore DB for this ENV.
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "conduit_eventstore_dev",
+  hostname: "localhost",
+  pool_size: 10
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
@@ -36,11 +45,11 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
-# Configure your database
+# Configs the read store DB for this ENV.
 config :conduit, Conduit.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "conduit_dev",
+  database: "conduit_readstore_dev",
   hostname: "localhost",
   pool_size: 10
