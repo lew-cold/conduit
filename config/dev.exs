@@ -41,6 +41,9 @@ config :eventstore, EventStore.Storage,
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
+# Configures the Commanded Ecto Projections lib
+config :commanded_ecto_projections, repo: Conduit.Repo
+
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20

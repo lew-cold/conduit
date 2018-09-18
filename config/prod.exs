@@ -39,6 +39,9 @@ config :conduit, Conduit.Repo,
   hostname: "localhost",
   pool_size: 10
 
+# Configures the Commanded Ecto Projections lib
+config :commanded_ecto_projections, repo: Conduit.Repo
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

@@ -10,6 +10,10 @@ defmodule Conduit.Application do
       supervisor(Conduit.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ConduitWeb.Endpoint, []),
+      # Accounts Supervisor
+      supervisor(Conduit.Accounts.Supervisor, []),
+      # Enforce the Unique constraints
+      worker(Conduit.Support.Unique, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

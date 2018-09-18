@@ -19,7 +19,9 @@ defmodule ConduitWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
+
       import ConduitWeb.Router.Helpers
+      import Conduit.Factory
 
       # The default endpoint for testing
       @endpoint ConduitWeb.Endpoint
@@ -28,10 +30,6 @@ defmodule ConduitWeb.ConnCase do
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Conduit.Repo)
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Conduit.Repo, {:shared, self()})
-    end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 

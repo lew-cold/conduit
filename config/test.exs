@@ -16,7 +16,7 @@ config :eventstore, EventStore.Storage,
   password: "postgres",
   database: "conduit_eventstore_test",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 1
 
 # Configs the read store DB for this ENV.
 config :conduit, Conduit.Repo,
@@ -25,4 +25,11 @@ config :conduit, Conduit.Repo,
   password: "postgres",
   database: "conduit_readstore_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool_size: 1
+
+# Configures the Commanded Ecto Projections lib
+config :commanded_ecto_projections, repo: Conduit.Repo
+
+# Configures Bcrypt to do limited rounds during test phase
+
+config :comeonin, :bcrypt_log_rounds, 4

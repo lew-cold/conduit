@@ -21,18 +21,49 @@ defmodule Conduit.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Conduit.Factory
       import Conduit.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Conduit.Repo)
+    Application.stop(:conduit)
+    Application.stop(:commanded)
+    Application.stop(:eventstore)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Conduit.Repo, {:shared, self()})
-    end
+    reset_eventstore()
+    reset_readstore()
+
+    Application.ensure_all_started(:conduit)
 
     :ok
+  end
+
+  defp reset_eventstore do
+    {:ok, conn} =
+      EventStore.configuration()
+        |> EventStore.Config.parse()
+        |> EventStore.Config.default_postgrex_opts()
+        |> Postgrex.start_link()
+
+    EventStore.Storage.Initializer.reset!(conn)
+  end
+
+  defp reset_readstore do
+    readstore_config = Application.get_env(:conduit, Conduit.Repo)
+
+    {:ok, conn} = Postgrex.start_link(readstore_config)
+
+    Postgrex.query!(conn, truncate_readstore_tables(), [])
+  end
+
+  defp truncate_readstore_tables do
+    """
+    TRUNCATE TABLE
+      accounts_users,
+      projection_versions
+    RESTART IDENTITY;
+    """
   end
 
   @doc """

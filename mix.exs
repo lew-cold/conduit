@@ -44,15 +44,19 @@ defmodule Conduit.Mixfile do
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.1"},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
+      {:commanded_ecto_projections, "~> 0.6"},
+      {:vex, "~> 0.6"},
+      {:bcrypt_elixir, "~> 1.0"},
+      {:comeonin, "~> 4.0"},
     ]
   end
 
   defp aliases do
     [
       "event_store_reset": ["event_store.drop", "event_store.create", "event_store.init"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      "ecto.setup": ["ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.create", "ecto.setup"],
+      "test": ["ecto.reset", "test"],
     ]
   end
 end
